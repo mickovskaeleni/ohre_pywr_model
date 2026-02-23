@@ -1,5 +1,0 @@
-pywr
-pandas
-numpy
-matplotlib
-scipy
