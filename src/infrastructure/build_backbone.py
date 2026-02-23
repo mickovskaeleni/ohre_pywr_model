@@ -1,3 +1,5 @@
+from src.config import WATERES_FILE
+
 import pyreadr
 import pandas as pd
 from pywr.model import Model
@@ -54,7 +56,7 @@ def build_backbone_model(df):
 if __name__ == "__main__":
 
     print("Loading WATERES data...")
-    wateres_path = "data/raw/WRI_wateres_SWB_subset_deficit_inflow_yield_1991_2020.rds"
+    wateres_path = WATERES_FILE
     df = load_wateres(wateres_path)
 
     print("Filtering inflow variable...")

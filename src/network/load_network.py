@@ -1,3 +1,5 @@
+from src.config import SHAPEFILE_PATH, IDS_PATH
+
 import geopandas as gpd
 import pandas as pd
 
@@ -10,8 +12,8 @@ def load_ids(path):
     return ids
 
 if __name__ == "__main__":
-    shp_path = "data/raw/SWB_ohre/ohre.shp"
-    ids_path = "data/raw/SWB_ohre/IDs_list.csv"
+    shp_path = SHAPEFILE_PATH
+    ids_path = IDS_PATH
 
     network = load_shapefile(shp_path)
     ids = load_ids(ids_path)
