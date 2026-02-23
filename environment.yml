@@ -14,4 +14,5 @@ dependencies:
   - rpy2
   - matplotlib
   - geopandas
+  - pyreadr
 prefix: /opt/anaconda3/envs/pywr_test
