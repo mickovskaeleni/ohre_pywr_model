@@ -1,7 +1,11 @@
 import pandas as pd
+import pyreadr
 
 from pywr.model import Model
-from pywr.nodes import Input, Output, Link
+from pywr.nodes import Input, Output, Link, Storage
+from pywr.timestepper import Timestepper
+from pywr.parameters import ArrayIndexedParameter
+
 
 
 def build_pywr_network():
@@ -9,7 +13,27 @@ def build_pywr_network():
     print("Loading river edges...")
     edges = pd.read_csv("data/processed/river_edges.csv")
 
+    print("Loading WATERES inflows...")
+
+    result = pyreadr.read_r(
+        "data/raw/WRI_wateres_SWB_subset_deficit_inflow_yield_1991_2020.rds"
+    )
+
+    wateres = result[None]
+    wateres["DTM"] = pd.to_datetime(wateres["DTM"])
+    # keep only inflow variable
+    wateres = wateres[wateres["var"] == "inflow"]
+
     model = Model()
+
+    model.timestepper = Timestepper(
+        start=pd.Timestamp("1991-01-01"),
+        end=pd.Timestamp("2020-12-31"),
+        delta=pd.Timedelta(days=1)
+    )
+
+    RES_UP = "OHL_0730"
+    RES_DOWN = "OHL_0030"
 
     reaches = {}
 
@@ -33,14 +57,35 @@ def build_pywr_network():
         upstream = row["upstream"]
         downstream = row["downstream"]
 
-        reaches[upstream].connect(reaches[downstream])
+        if upstream == RES_UP and downstream == RES_DOWN:
+
+            reservoir = Storage(
+                model,
+                name="reservoir_test",
+                max_volume=1000,
+                initial_volume=500
+            )
+
+            release = Link(model, name="reservoir_release")
+
+            reaches[upstream].connect(reservoir)
+            reservoir.connect(release)
+            release.connect(reaches[downstream])
+
+        else:
+            reaches[upstream].connect(reaches[downstream])
 
     # --------------------------------------------------
     # Create basin outlet
     # --------------------------------------------------
     print("Creating basin outlet...")
 
-    basin_outlet = Output(model, name="basin_outlet")
+    basin_outlet = Output(
+        model,
+        name="basin_outlet",
+        max_flow=10000,
+        cost=-1
+    )
 
     # downstream basins are those that appear in downstream column
     upstream_set = set(edges["upstream"])
@@ -56,28 +101,54 @@ def build_pywr_network():
         reaches[basin].connect(basin_outlet)
 
     # --------------------------------------------------
-    # Temporary inflows (for validation only)
+    # Attach WATERES inflows
     # --------------------------------------------------
-    print("Adding temporary inflows...")
+    print("Attaching WATERES inflows...")
 
     for swb in swb_ids:
 
-        inflow = Input(model, name=f"inflow_{swb}")
+        swb_data = wateres[wateres["UPOV_ID"] == swb]
+
+        if swb_data.empty:
+            continue
+
+        swb_data = swb_data.sort_values("DTM")
+
+        flow_series = swb_data["value"].values
+
+        inflow_param = ArrayIndexedParameter(
+            model,
+            flow_series
+        )
+
+        inflow = Input(
+            model,
+            name=f"inflow_{swb}",
+            max_flow=inflow_param
+        )
+
         inflow.connect(reaches[swb])
 
-    return model
+    return model, basin_outlet
 
 
 if __name__ == "__main__":
 
-    model = build_pywr_network()
+    model, basin_outlet= build_pywr_network()
 
     print("Checking model structure...")
     model.check()
-
     print("✅ Pywr river network successfully built.")
 
     print("Running model...")
     model.run()
-
     print("✅ Model run completed.")
+
+    total_inflow = sum(
+        node.flow.sum() for node in model.nodes if node.name.startswith("inflow")
+    )
+
+    total_outflow = basin_outlet.flow.sum()
+
+    print(f"Total inflow: {total_inflow}")
+    print(f"Total outflow: {total_outflow}")
