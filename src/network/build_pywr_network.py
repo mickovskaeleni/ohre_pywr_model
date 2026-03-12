@@ -1,3 +1,5 @@
+from xml.parsers.expat import model
+
 import pandas as pd
 import pyreadr
 
@@ -5,6 +7,7 @@ from pywr.model import Model
 from pywr.nodes import Input, Output, Link, Storage
 from pywr.timestepper import Timestepper
 from pywr.parameters import ArrayIndexedParameter
+from pywr.parameters import DataFrameParameter
 
 
 
@@ -22,7 +25,10 @@ def build_pywr_network():
     wateres = result[None]
     wateres["DTM"] = pd.to_datetime(wateres["DTM"])
     # keep only inflow variable
-    wateres = wateres[wateres["var"] == "inflow"]
+    wateres = wateres[
+        (wateres["var"] == "inflow") &
+        (wateres["loc"] == "outlet")
+    ]
 
     model = Model()
 
@@ -83,8 +89,8 @@ def build_pywr_network():
     basin_outlet = Output(
         model,
         name="basin_outlet",
-        max_flow=10000,
-        cost=-1
+        cost=-1,
+        max_flow=1e9
     )
 
     # downstream basins are those that appear in downstream column
@@ -113,19 +119,15 @@ def build_pywr_network():
             continue
 
         swb_data = swb_data.sort_values("DTM")
+        swb_data = swb_data.drop_duplicates(subset="DTM")
 
-        flow_series = swb_data["value"].values
+        ts = swb_data.set_index("DTM")["value"].to_frame()
+        ts = ts.asfreq("D")
 
-        inflow_param = ArrayIndexedParameter(
-            model,
-            flow_series
-        )
+        param = DataFrameParameter(model, ts)
 
-        inflow = Input(
-            model,
-            name=f"inflow_{swb}",
-            max_flow=inflow_param
-        )
+        inflow = Input(model, name=f"inflow_{swb}")
+        inflow.max_flow = param
 
         inflow.connect(reaches[swb])
 
