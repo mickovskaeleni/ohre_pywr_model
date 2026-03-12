@@ -51,7 +51,7 @@ This indicates that the Pywr network reproduces the basin hydrology with high ac
 
 ### Validation Plot
 
-
+![Validation](outputs/validation_wateres_vs_pywr.png)
 
 # Project Structure
 
