@@ -18,8 +18,6 @@ def plot_network():
     # compute centroids for arrows
     basins["centroid"] = basins.geometry.centroid
 
-    centroid_dict = basins.set_index("UPOV_ID")["centroid"].to_dict()
-
     print("Plotting network...")
 
     fig, ax = plt.subplots(figsize=(10, 10))

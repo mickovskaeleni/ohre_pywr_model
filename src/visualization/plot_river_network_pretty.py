@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-from src.config import SHAPEFILE_PATH
+from src.config import OUTPUT_DIR, SHAPEFILE_PATH
 
 
 def plot_network():
@@ -90,11 +90,7 @@ def plot_network():
 
     plt.tight_layout()
 
-    # save figure
-    output_dir = Path("figures")
-    output_dir.mkdir(exist_ok=True)
-
-    output_file = output_dir / "ohre_river_network.png"
+    output_file = OUTPUT_DIR / "ohre_river_network.png"
 
     plt.savefig(
         output_file,

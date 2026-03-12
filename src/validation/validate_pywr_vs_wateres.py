@@ -3,7 +3,8 @@ import pyreadr
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.network.build_pywr_network import build_pywr_network
+from src.config import OUTPUT_DIR
+from src.model.build_pywr_network import build_pywr_network
 from pywr.recorders import NumpyArrayNodeRecorder
 
 print("Loading WATERES data...")
@@ -75,5 +76,17 @@ plt.xlabel("Time")
 plt.ylabel("Discharge")
 
 plt.tight_layout()
+
+# save figure
+output_file = OUTPUT_DIR / "validation_wateres_vs_pywr.png"
+
+plt.savefig(
+    output_file,
+    dpi=300,
+    bbox_inches="tight"
+)
+
+print(f"Figure saved to: {output_file}")
+
 plt.show()
 
