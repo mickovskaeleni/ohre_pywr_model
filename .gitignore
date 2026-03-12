@@ -2,10 +2,6 @@
 data/*
 !data/.gitkeep
 
-# Ignore outputs
-outputs/*
-!outputs/.gitkeep
-
 # Python
 __pycache__/
 *.pyc

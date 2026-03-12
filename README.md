@@ -51,7 +51,7 @@ This indicates that the Pywr network reproduces the basin hydrology with high ac
 
 ### Validation Plot
 
-![Validation: WATERES vs Pywr](outputs/validation_wateres_vs_pywr.png)
+
 
 # Project Structure
 
@@ -93,25 +93,25 @@ This indicates that the Pywr network reproduces the basin hydrology with high ac
 
 The current model reproduces the hydrological routing of the Ohře basin using the following workflow:
 
-SWB shapefile
-      │
-      ▼
-build_connectivity.py
-      │
-      ▼
-river_edges.csv
-      │
-      ▼
-build_pywr_network.py
-      │
-      ▼
-Pywr routing model
-      │
-      ▼
-validate_pywr_vs_wateres.py
-      │
-      ▼
-Hydrological validation
+    SWB shapefile
+            │
+            ▼
+    build_connectivity.py
+            │
+            ▼
+    river_edges.csv
+            │
+            ▼
+    build_pywr_network.py
+            │
+            ▼
+    Pywr routing model
+            │
+            ▼
+    validate_pywr_vs_wateres.py
+            │
+            ▼
+    Hydrological validation
 
 This pipeline ensures that the Pywr network correctly represents the river topology and hydrological forcing before adding water-demand components.
 
