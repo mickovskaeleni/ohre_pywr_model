@@ -76,3 +76,8 @@ if __name__ == "__main__":
     model.check()
 
     print("✅ Pywr river network successfully built.")
+
+    print("Running model...")
+    model.run()
+
+    print("✅ Model run completed.")
