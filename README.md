@@ -38,6 +38,21 @@ Future phases will add:
 -   environmental flow constraints\
 -   reinforcement learning for water allocation policies
 
+## Model Validation
+
+The Pywr routing model was validated against the aggregated basin inflow from the WATERES dataset.
+
+Validation metrics:
+
+- **R² ≈ 0.992**
+- **RMSE ≈ 167 m³/s**
+
+This indicates that the Pywr network reproduces the basin hydrology with high accuracy.
+
+### Validation Plot
+
+![Validation: WATERES vs Pywr](outputs/validation_wateres_vs_pywr.png)
+
 # Project Structure
 
     ohre_pywr_model
@@ -73,6 +88,32 @@ Future phases will add:
     │
     ├── environment.yml
     └── README.md
+
+## Modeling Pipeline
+
+The current model reproduces the hydrological routing of the Ohře basin using the following workflow:
+
+SWB shapefile
+      │
+      ▼
+build_connectivity.py
+      │
+      ▼
+river_edges.csv
+      │
+      ▼
+build_pywr_network.py
+      │
+      ▼
+Pywr routing model
+      │
+      ▼
+validate_pywr_vs_wateres.py
+      │
+      ▼
+Hydrological validation
+
+This pipeline ensures that the Pywr network correctly represents the river topology and hydrological forcing before adding water-demand components.
 
 # Setup
 
