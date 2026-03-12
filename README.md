@@ -11,8 +11,6 @@ The current implementation reproduces the **hydrological backbone** of
 the basin using routed inflows from the **WATERES dataset** and a river
 network reconstructed from **SWB sub-basin polygons**.
 
-------------------------------------------------------------------------
-
 # Current Model Status
 
 **Phase 1: Hydrological backbone (completed)**
@@ -39,8 +37,6 @@ Future phases will add:
 -   reservoir operations\
 -   environmental flow constraints\
 -   reinforcement learning for water allocation policies
-
-------------------------------------------------------------------------
 
 # Project Structure
 
@@ -78,16 +74,12 @@ Future phases will add:
     ├── environment.yml
     └── README.md
 
-------------------------------------------------------------------------
-
 # Setup
 
 Create the conda environment:
 
     conda env create -f environment.yml
     conda activate pywr_test
-
-------------------------------------------------------------------------
 
 # Running the Model
 
@@ -101,8 +93,6 @@ This generates:
 
     data/processed/river_edges.csv
 
-------------------------------------------------------------------------
-
 ### 2. Plot reconstructed river network
 
     python -m src.visualization.plot_river_network
@@ -110,8 +100,6 @@ This generates:
 Output:
 
     outputs/ohre_river_network.png
-
-------------------------------------------------------------------------
 
 ### 3. Validate Pywr routing against WATERES inflow
 
@@ -127,8 +115,6 @@ Output figure:
 
     outputs/validation_wateres_vs_pywr.png
 
-------------------------------------------------------------------------
-
 # Data Sources
 
 **WATERES dataset**
@@ -142,8 +128,6 @@ Daily routed hydrological variables for SWB sub-basins including:
 Period used in this model:
 
     1991–2020
-
-------------------------------------------------------------------------
 
 # Model Concept
 
@@ -165,8 +149,6 @@ Current model structure:
 
 This routing backbone will serve as the base for future **water
 allocation modeling**.
-
-------------------------------------------------------------------------
 
 # Author
 
