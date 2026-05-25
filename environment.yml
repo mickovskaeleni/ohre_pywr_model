@@ -2,6 +2,7 @@ name: pywr_test
 channels:
   - conda-forge
   - defaults
+
 dependencies:
   - python=3.10
   - networkx
@@ -11,8 +12,6 @@ dependencies:
   - pandas
   - h5py
   - pytables
-  - rpy2
   - matplotlib
   - geopandas
   - pyreadr
-prefix: /opt/anaconda3/envs/pywr_test

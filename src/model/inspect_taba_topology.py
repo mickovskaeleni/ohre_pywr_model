@@ -26,7 +26,7 @@ def plot_taba_connectivity():
     print("\n=== LOAD TABA CONNECTIVITY ===")
 
     taba = pyreadr.read_r(
-        "data/raw/from_petr/TABA.rds"
+        "data/raw/SWB_ohre/TABA.rds"
     )[None]
 
 

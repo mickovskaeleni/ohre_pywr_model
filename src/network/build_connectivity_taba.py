@@ -32,7 +32,7 @@ def build_connectivity_taba():
     print("\nLoading TABA topology...")
 
     taba = pyreadr.read_r(
-        "data/raw/from_petr/TABA.rds"
+        "data/raw/SWB_ohre/TABA.rds"
     )[None]
 
     print(f"TABA rows: {len(taba)}")
