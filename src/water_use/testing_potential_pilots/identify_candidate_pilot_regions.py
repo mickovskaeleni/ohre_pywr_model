@@ -372,6 +372,29 @@ top_candidates["candidate_name"] = [
     "Candidate F"
 ]
 
+print("\n=== CANDIDATE DETAILS ===")
+
+for _, row in top_candidates.iterrows():
+
+    print(
+        f"{row['candidate_name']}"
+        f" -> {row['UPOV_ID']}"
+    )
+
+    print(
+        f"   Upstream SWBs: {row['n_upstream']}"
+    )
+
+    print(
+        f"   Total MVM: {row['total_mvm']:.2f}"
+    )
+
+    print(
+        f"   Pilot score: {row['pilot_score']:.3f}"
+    )
+
+    print()
+
 
 # ======================================================
 # PLOT
