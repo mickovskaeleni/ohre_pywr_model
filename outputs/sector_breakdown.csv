@@ -1,0 +1,9 @@
+Sector,Variable,Total_Reported_Volume,Reporting_IDs,Share_%
+Other Industry,OD_OST,18504.425,30,48.18
+Public Water Supply,OD_VER_V,14576.111,75,37.95
+Circulating Cooling,OD_C_CHL,2131.91,3,5.55
+Industrial Technology,OD_PR_T,2025.474,25,5.27
+Mineral Waters,OD_PLZ_PMV,844.444,46,2.2
+Irrigation,OD_ZAVL,171.633,19,0.45
+Livestock,OD_ZIV_V,125.358,8,0.33
+Once-through Cooling,OD_P_CHL,28.081,5,0.07
